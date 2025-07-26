@@ -1,4 +1,4 @@
-import { scrollToElement } from "@/utils/refFuncs";
+import { scrollToElement } from "@/utils/ref";
 import { useEffect, useRef } from "react";
 
 const useRefs = () => {
