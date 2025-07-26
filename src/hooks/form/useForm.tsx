@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import useValidateForm from "./useValidateForm";
+import useValidate from "./useValidate";
 import useRefs from "./useRefs";
 import { ValidateSchema } from "../../types";
 import useSubmit from "./useSubmit";
@@ -31,7 +31,7 @@ const useForm = <T extends object>(
     firstErroryKey,
     isValidationOn,
     debouncedValidate,
-  } = useValidateForm<T>(values, validationSchema!);
+  } = useValidate<T>(values, validationSchema!);
   const { focusWhenInvalid } = useRefs(firstErroryKey);
   const { isSubmitted, submitAttempted } = useSubmit();
   const isNotValidateCondition = !isSubmitted || !isValidationOn;

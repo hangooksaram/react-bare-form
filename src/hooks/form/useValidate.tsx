@@ -4,7 +4,7 @@ import { invalid } from "./validate";
 import { ValidateSchema } from "../../types";
 import { useDebounce } from "react-simplikit";
 
-const useValidateForm = <T extends { [key: string]: any }>(
+const useValidate = <T extends { [key: string]: any }>(
   form: T,
   validateSchema: ValidateSchema
 ) => {
@@ -52,4 +52,4 @@ const useValidateForm = <T extends { [key: string]: any }>(
   };
 };
 
-export default useValidateForm;
+export default useValidate;
