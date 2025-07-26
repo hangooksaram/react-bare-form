@@ -7,11 +7,6 @@ export interface FormErrors {
 const useErrors = <T extends FormErrors>() => {
   const [errors, setErrors] = useState<T | null>(null);
 
-  const isInvalid = (key: string): boolean => {
-    if (errors) return key in errors!;
-    return false;
-  };
-
   const updateError = (key: string, errorMessage: string) => {
     setErrors((prev) => ({ ...prev!, [key]: errorMessage! }));
   };
