@@ -1,7 +1,7 @@
 import { Ref, useRef } from "react";
 import { FormErrors } from "./useErrors";
 
-const useFormElementRefs = (firstErroryKey: string) => {
+const useRefs = (firstErroryKey: string) => {
   const formElementRefs = useRef<{ [key: string]: HTMLElement }>({});
   const shouldNotScrollConditions = (key: string) => {
     return {
@@ -41,4 +41,4 @@ const useFormElementRefs = (firstErroryKey: string) => {
 
   return { focusWhenInvalid };
 };
-export default useFormElementRefs;
+export default useRefs;
