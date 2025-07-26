@@ -6,8 +6,6 @@ export interface FormErrors {
 
 const useErrors = <T extends FormErrors>() => {
   const [errors, setErrors] = useState<T | null>(null);
-  const firstErroryKey =
-    errors !== null && errors[0] !== null ? Object.keys(errors)[0] : "";
 
   const isInvalid = (key: string): boolean => {
     if (errors) return key in errors!;
@@ -30,7 +28,6 @@ const useErrors = <T extends FormErrors>() => {
 
   return {
     errors,
-    firstErroryKey,
     updateError,
     deleteError,
   };

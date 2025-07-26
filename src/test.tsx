@@ -86,17 +86,16 @@ const Test = () => {
       onKeyDown={submitOnEnter}
     >
       <input
-        ref={form.focusWhenInvalid}
         name="name"
         onChange={form.handleChange}
         value={form.values.name}
         type="text"
         placeholder="Enter name"
+        {...form.registerRef("name")}
       />
       {form.errors?.name}
 
       <input
-        ref={form.focusWhenInvalid}
         name="email"
         onChange={form.handleChange}
         value={form.values.email}
@@ -106,7 +105,6 @@ const Test = () => {
       {form.errors?.email}
 
       <input
-        ref={form.focusWhenInvalid}
         name="phone"
         onChange={form.handleChange}
         value={form.values.phone}
@@ -116,7 +114,6 @@ const Test = () => {
       {form.errors?.phone}
 
       <input
-        ref={form.focusWhenInvalid}
         name="address"
         onChange={form.handleChange}
         value={form.values.address}
@@ -126,7 +123,6 @@ const Test = () => {
       {form.errors?.address}
 
       <input
-        ref={form.focusWhenInvalid}
         name="city"
         onChange={form.handleChange}
         value={form.values.city}

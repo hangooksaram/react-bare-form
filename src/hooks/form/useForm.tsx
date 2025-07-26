@@ -4,6 +4,7 @@ import useRefs from "./useRefs";
 import { ValidateSchema } from "../../types";
 import useSubmit from "./useSubmit";
 import useValues from "./useValues";
+import useScrollWhenError from "./useScrollWhenError";
 
 export type ExternalValues<T> = T & { [key: string]: any };
 
@@ -24,21 +25,16 @@ const useForm = <T extends object>(
     initialValues,
     externalValues
   );
-  const {
-    errors,
-    validateAllFormValues,
-    isValid,
-    firstErroryKey,
-    isValidationOn,
-    debouncedValidate,
-  } = useValidate<T>(values, validationSchema!);
-  const { focusWhenInvalid } = useRefs(firstErroryKey);
+  const { registerRef, scrollToErrorElement, formElementRefs } = useRefs();
+  const { errors, validateAll, isValid, isValidationOn, debouncedValidate } =
+    useValidate<T>(values, validationSchema!);
+  useScrollWhenError<T>(errors, formElementRefs, scrollToErrorElement);
   const { isSubmitted, submitAttempted } = useSubmit();
   const isNotValidateCondition = !isSubmitted || !isValidationOn;
 
   useEffect(() => {
     if (submitAttempted > 0) {
-      validateAllFormValues();
+      validateAll();
     }
   }, [submitAttempted]);
 
@@ -64,7 +60,7 @@ const useForm = <T extends object>(
     errors,
     isSubmitted,
     isValid,
-    focusWhenInvalid,
+    registerRef,
   };
 };
 

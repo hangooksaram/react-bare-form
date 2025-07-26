@@ -11,26 +11,26 @@ const useValidate = <T extends { [key: string]: any }>(
   const [isValid, setIsValid] = useState<boolean>(false);
   const isValidationOn =
     validateSchema !== undefined && validateSchema !== null;
-  const { errors, updateError, deleteError, firstErroryKey } = useErrors<T>();
+  const { errors, updateError, deleteError } = useErrors<T>();
   const debouncedValidate = useDebounce(<T,>(name: string, value: T) => {
-    validate(name!, value);
+    validateAndUpdateError(name!, value);
   }, 500);
 
-  const validateAllFormValues = () => {
+  const validateAll = () => {
     for (const key of Object.keys(validateSchema)) {
-      validate(key, form[key]);
+      validateAndUpdateError(key, form[key]);
     }
   };
 
-  const validate = (key: string, value: any) => {
-    const errorMessage = invalid(value, validateSchema[key]);
+  const validateAndUpdateError = (name: string, value: any) => {
+    const errorMessage = invalid(value, validateSchema[name]);
 
     if (errorMessage) {
-      updateError(key, errorMessage);
+      updateError(name, errorMessage);
 
       return;
     }
-    deleteError(key);
+    deleteError(name);
   };
 
   useEffect(() => {
@@ -43,10 +43,9 @@ const useValidate = <T extends { [key: string]: any }>(
 
   return {
     isValid,
-    validate,
-    validateAllFormValues,
+    validateAndUpdateError,
+    validateAll,
     errors,
-    firstErroryKey,
     isValidationOn,
     debouncedValidate,
   };

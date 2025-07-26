@@ -1,44 +1,51 @@
-import { Ref, useRef } from "react";
-import { FormErrors } from "./useErrors";
+import { scrollToElement } from "@/utils/refFuncs";
+import { useEffect, useRef } from "react";
 
-const useRefs = (firstErroryKey: string) => {
+const useRefs = () => {
   const formElementRefs = useRef<{ [key: string]: HTMLElement }>({});
   const shouldNotScrollConditions = (key: string) => {
     return {
       isNotSettedRef: !formElementRefs.current[key],
-      isCurrentKeyNotFirstErrorKey: key !== firstErroryKey,
     };
   };
+  const cannotScrollTo = (el: HTMLInputElement) =>
+    Object.values(shouldNotScrollConditions(el.name)).some(
+      (condition) => condition
+    );
 
   const setRef = (el: HTMLElement, key: string) => {
     formElementRefs.current![key] = el!;
   };
 
-  const scrollToFormElement = (key: string) => {
-    console.log(`scrollToFormElement: ${key}`);
-    formElementRefs.current[key].scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-      inline: "nearest",
-    });
+  /**
+   * Registers the input element for form state and validation management.
+   *
+   * To enable features such as auto-focusing the first invalid input after validation failure (e.g., for accessibility or UX improvements),
+   * you must spread the return value of this function into your input element
+   *
+   * @example
+   * <input {...registerRef('fieldName')} />
+   * @param key - The name of the form element to register.
+   * @returns An object containing a ref callback and the name of the form element.
+   */
+  const registerRef = (key: string): Object => {
+    return {
+      ref: (el: HTMLInputElement | null) => {
+        if (el) {
+          setRef(el, key);
+        }
+      },
+      name: key,
+    };
   };
 
-  const focusWhenInvalid = (el: HTMLInputElement | null) => {
-    if (!el) {
+  const scrollToErrorElement = (el: HTMLInputElement) => {
+    if (cannotScrollTo(el)) {
       return;
     }
-    setRef(el, el.name);
-    if (
-      Object.values(shouldNotScrollConditions(el.name)).some(
-        (condition) => condition
-      )
-    ) {
-      return;
-    }
-
-    scrollToFormElement(el.name);
+    scrollToElement(formElementRefs.current[el.name]);
   };
 
-  return { focusWhenInvalid };
+  return { registerRef, scrollToErrorElement, formElementRefs };
 };
 export default useRefs;

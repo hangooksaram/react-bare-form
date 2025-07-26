@@ -2,8 +2,8 @@ import {
   ValidateFunction,
   ValidateInfoValue,
   ValidateSchemaValue,
-} from '@/types/index';
-import { isNumber, isRegExp, isString } from '@/types/typeGuards';
+} from "@/types/index";
+import { isNumber, isRegExp, isString } from "@/types/typeGuards";
 
 export const invalid = <T>(value: T, validateInfo: ValidateSchemaValue) => {
   const v = validate(value);
@@ -21,13 +21,13 @@ export const invalid = <T>(value: T, validateInfo: ValidateSchemaValue) => {
     }
   }
   if (max) {
-    if (typeof max.value === 'number' && !v.isMax(max.value!)) {
+    if (typeof max.value === "number" && !v.isMax(max.value!)) {
       return max.message;
     }
   }
   if (minLength) {
     if (
-      typeof minLength.value === 'number' &&
+      typeof minLength.value === "number" &&
       !v.isMinLength(minLength.value!)
     ) {
       return minLength.message;
@@ -35,7 +35,7 @@ export const invalid = <T>(value: T, validateInfo: ValidateSchemaValue) => {
   }
 
   if (regex) {
-    if (typeof regex.value !== 'number' && !v.isRegexCorrect(regex.value!)) {
+    if (typeof regex.value !== "number" && !v.isRegexCorrect(regex.value!)) {
       return regex.message;
     }
   }
@@ -47,7 +47,7 @@ const validate = <T>(value: T): { [key: string]: ValidateFunction } => {
     isRequired: () =>
       value !== null &&
       value !== undefined &&
-      ((typeof value === 'string' && value !== '') ||
+      ((typeof value === "string" && value !== "") ||
         (Array.isArray(value) && value.length > 0)),
     isRegexCorrect: (regex: ValidateInfoValue) => {
       if (!isString(value)) {
