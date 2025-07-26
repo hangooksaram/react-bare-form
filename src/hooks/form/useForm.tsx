@@ -1,10 +1,10 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import useValidate from "./useValidate";
+import useValidate from "../validate/useValidate";
 import useRefs from "./useRefs";
 import { ValidateSchema } from "../../types";
 import useSubmit from "./useSubmit";
 import useValues from "./useValues";
-import useScrollWhenError from "./useScrollWhenError";
+import useScrollWhenError from "../errors/useScrollWhenError";
 
 export type ExternalValues<T> = T & { [key: string]: any };
 

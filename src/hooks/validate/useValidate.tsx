@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import useErrors from "./useErrors";
-import { invalid } from "./validate";
+import useErrors from "../errors/useErrors";
+import { invalid } from "../../utils/validate";
 import { ValidateSchema } from "../../types";
 import { useDebounce } from "react-simplikit";
 
