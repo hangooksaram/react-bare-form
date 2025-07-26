@@ -1,13 +1,13 @@
-import {  useState } from 'react';
+import { useState } from "react";
 
-export interface FormErrors  {
+export interface FormErrors {
   [key: string]: string;
 }
 
-const useFormErrors = <T extends FormErrors>() => {
+const useErrors = <T extends FormErrors>() => {
   const [errors, setErrors] = useState<T | null>(null);
   const firstErroryKey =
-    errors !== null && errors[0] !== null ? Object.keys(errors)[0] : '';
+    errors !== null && errors[0] !== null ? Object.keys(errors)[0] : "";
 
   const isInvalid = (key: string): boolean => {
     if (errors) return key in errors!;
@@ -19,9 +19,9 @@ const useFormErrors = <T extends FormErrors>() => {
   };
 
   const deleteError = (key: string) => {
-    if(errors !== null) {
+    if (errors !== null) {
       setErrors((prev: T | null) => {
-        const copied = { ...prev as T }; 
+        const copied = { ...(prev as T) };
         delete copied[key];
         return copied;
       });
@@ -35,4 +35,4 @@ const useFormErrors = <T extends FormErrors>() => {
     deleteError,
   };
 };
-export default useFormErrors;
+export default useErrors;

@@ -1,9 +1,7 @@
-import { Ref, useRef } from 'react';
-import { FormErrors } from './useFormErrors';
+import { Ref, useRef } from "react";
+import { FormErrors } from "./useErrors";
 
-const useFormElementRefs = (
-  firstErroryKey: string,
-) => {
+const useFormElementRefs = (firstErroryKey: string) => {
   const formElementRefs = useRef<{ [key: string]: HTMLElement }>({});
   const shouldNotScrollConditions = (key: string) => {
     return {
@@ -19,27 +17,26 @@ const useFormElementRefs = (
   const scrollToFormElement = (key: string) => {
     console.log(`scrollToFormElement: ${key}`);
     formElementRefs.current[key].scrollIntoView({
-      behavior: 'smooth',
-      block: 'center',
-      inline: 'nearest',
+      behavior: "smooth",
+      block: "center",
+      inline: "nearest",
     });
   };
 
-  const focusWhenInvalid = (el: HTMLInputElement|null) =>  {
+  const focusWhenInvalid = (el: HTMLInputElement | null) => {
     if (!el) {
       return;
     }
-      setRef(el, el.name);
-      if (
-        Object.values(shouldNotScrollConditions(el.name)).some(
-          (condition) => condition,
-        )
-      ) {
-        return;
-      }
+    setRef(el, el.name);
+    if (
+      Object.values(shouldNotScrollConditions(el.name)).some(
+        (condition) => condition
+      )
+    ) {
+      return;
+    }
 
-      scrollToFormElement(el.name);
-
+    scrollToFormElement(el.name);
   };
 
   return { focusWhenInvalid };

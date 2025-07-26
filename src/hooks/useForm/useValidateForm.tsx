@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react';
-import useFormErrors from './useFormErrors';
-import { invalid } from './validate';
-import { ValidateSchema } from '../../types';
-import { useDebounce } from 'react-simplikit';
+import { useEffect, useState } from "react";
+import useErrors from "./useErrors";
+import { invalid } from "./validate";
+import { ValidateSchema } from "../../types";
+import { useDebounce } from "react-simplikit";
 
 const useValidateForm = <T extends { [key: string]: any }>(
   form: T,
-  validateSchema: ValidateSchema,
+  validateSchema: ValidateSchema
 ) => {
   const [isValid, setIsValid] = useState<boolean>(false);
-  const isValidationOn = validateSchema !== undefined && validateSchema !== null;
-  const { errors, updateError, deleteError, firstErroryKey } =
-    useFormErrors<T>();
+  const isValidationOn =
+    validateSchema !== undefined && validateSchema !== null;
+  const { errors, updateError, deleteError, firstErroryKey } = useErrors<T>();
   const debouncedValidate = useDebounce(<T,>(name: string, value: T) => {
-      validate(name!, value);
+    validate(name!, value);
   }, 500);
 
   const validateAllFormValues = () => {
@@ -34,8 +34,7 @@ const useValidateForm = <T extends { [key: string]: any }>(
   };
 
   useEffect(() => {
-    
-    if(errors === null) {
+    if (errors === null) {
       setIsValid(true);
       return;
     }
@@ -49,7 +48,7 @@ const useValidateForm = <T extends { [key: string]: any }>(
     errors,
     firstErroryKey,
     isValidationOn,
-    debouncedValidate
+    debouncedValidate,
   };
 };
 
