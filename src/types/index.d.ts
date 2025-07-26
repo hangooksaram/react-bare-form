@@ -1,4 +1,4 @@
-export type ValidateKeys = 'required' | 'regex' | 'min' | 'max' | 'minLength';
+export type ValidateKeys = "required" | "regex" | "min" | "max" | "minLength";
 export type ValidateInfoValue = RegExp | number | undefined;
 export interface ValidateInfo {
   message?: string;
@@ -11,6 +11,4 @@ export interface ValidateSchema {
   [key: string]: ValidateSchemaValue;
 }
 
-export interface Error {
-  
-}
+export interface Error {}

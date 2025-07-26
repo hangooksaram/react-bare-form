@@ -10,7 +10,7 @@ const useRefs = () => {
   };
   const cannotScrollTo = (el: HTMLInputElement) =>
     Object.values(shouldNotScrollConditions(el.name)).some(
-      (condition) => condition
+      (condition) => condition,
     );
 
   const setRef = (el: HTMLElement, key: string) => {

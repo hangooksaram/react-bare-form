@@ -1,5 +1,5 @@
 export const isStringArray = (array: any[]): array is string[] => {
-  return array.every((item) => typeof item === 'string');
+  return array.every((item) => typeof item === "string");
 };
 
 export const isRegExp = (value: any): value is RegExp => {
@@ -7,9 +7,9 @@ export const isRegExp = (value: any): value is RegExp => {
 };
 
 export const isNumber = (value: any): value is number => {
-  return typeof value === 'number';
+  return typeof value === "number";
 };
 
 export const isString = (value: any): value is string => {
-  return typeof value === 'string';
+  return typeof value === "string";
 };

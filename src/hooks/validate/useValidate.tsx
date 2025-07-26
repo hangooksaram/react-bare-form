@@ -6,7 +6,7 @@ import { useDebounce } from "react-simplikit";
 
 const useValidate = <T extends { [key: string]: any }>(
   form: T,
-  validateSchema: ValidateSchema
+  validateSchema: ValidateSchema,
 ) => {
   const [isValid, setIsValid] = useState<boolean>(false);
   const isValidationOn =

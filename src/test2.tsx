@@ -6,7 +6,7 @@ const Test2 = () => {
 
   useEffect(() => {
     setErrorElement(
-      document.querySelector('input[name="test"]')! as HTMLInputElement
+      document.querySelector('input[name="test"]')! as HTMLInputElement,
     );
   }, []);
 

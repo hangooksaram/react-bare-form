@@ -4,7 +4,7 @@ import { FormErrors } from "./useErrors";
 const useScrollWhenError = <T,>(
   error: T | null,
   formElementRefs: React.RefObject<{ [key: string]: HTMLElement }>,
-  scrollToErrorElement: (el: HTMLInputElement) => void
+  scrollToErrorElement: (el: HTMLInputElement) => void,
 ) => {
   const firstErrorKey = error ? Object.keys(error)[0] : null;
 
@@ -15,7 +15,7 @@ const useScrollWhenError = <T,>(
       document.activeElement === formElementRefs.current[firstErrorKey]
     ) {
       scrollToErrorElement(
-        formElementRefs.current[firstErrorKey] as HTMLInputElement
+        formElementRefs.current[firstErrorKey] as HTMLInputElement,
       );
     }
   }, [error]);

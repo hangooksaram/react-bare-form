@@ -19,11 +19,11 @@ export type ExternalValues<T> = T & { [key: string]: any };
 const useForm = <T extends object>(
   initialValues: T,
   validationSchema?: ValidateSchema,
-  externalValues?: ExternalValues<T>
+  externalValues?: ExternalValues<T>,
 ) => {
   const { values, bareHandleChange } = useValues<T>(
     initialValues,
-    externalValues
+    externalValues,
   );
   const { registerRef, scrollToErrorElement, formElementRefs } = useRefs();
   const { errors, validateAll, isValid, isValidationOn, debouncedValidate } =
@@ -41,7 +41,7 @@ const useForm = <T extends object>(
   const handleChange = (
     e:
       | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-      | { name: string; value: T }
+      | { name: string; value: T },
   ) => {
     const target = "target" in e ? e.target : e;
     const { name, value } = target;
