@@ -63,27 +63,23 @@ const Test = () => {
     },
   };
 
-  const form = useForm(initalFormValues, validationSchema);
-
-  const submitOnEnter = (e: React.KeyboardEvent<HTMLFormElement>) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      buttonRef.current?.click();
-    }
-  };
+  const form = useForm({
+    initialValues: initalFormValues,
+    validationSchema,
+    onSubmit: (e) => {
+      console.log("Form submitted:", form.values);
+    },
+  });
 
   return (
     <form
-      onSubmit={(e) => {
-        e.preventDefault();
-      }}
+      onSubmit={form.handleSubmit}
       style={{
         height: "300vh",
         display: "flex",
         flexDirection: "column",
         gap: "16px",
       }}
-      onKeyDown={submitOnEnter}
     >
       <input
         name="name"
@@ -165,9 +161,7 @@ const Test = () => {
         placeholder="Enter notes"
       ></textarea>
       {form.errors?.notes}
-      <button ref={buttonRef} type="submit">
-        Submit
-      </button>
+      <button type="submit">Submit</button>
     </form>
   );
 };

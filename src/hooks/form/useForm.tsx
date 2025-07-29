@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import useValidate from "../validate/useValidate";
 import useRefs from "./useRefs";
-import { ValidateSchema } from "../../types";
+import { FormParameters, ValidateSchema } from "../../types";
 import useSubmit from "./useSubmit";
 import useValues from "./useValues";
 import useScrollWhenError from "../errors/useScrollWhenError";
@@ -16,20 +16,19 @@ export type ExternalValues<T> = T & { [key: string]: any };
  *
  * @returns
  */
-const useForm = <T extends object>(
-  initialValues: T,
-  validationSchema?: ValidateSchema,
-  externalValues?: ExternalValues<T>,
-) => {
+const useForm = <T extends object>(formParameters: FormParameters<T>) => {
+  const { initialValues, validationSchema, externalValues, onSubmit } =
+    formParameters;
+
   const { values, bareHandleChange } = useValues<T>(
     initialValues,
-    externalValues,
+    externalValues
   );
   const { registerRef, scrollToErrorElement, formElementRefs } = useRefs();
   const { errors, validateAll, isValid, isValidationOn, debouncedValidate } =
     useValidate<T>(values, validationSchema!);
   useScrollWhenError<T>(errors, formElementRefs, scrollToErrorElement);
-  const { isSubmitted, submitAttempted } = useSubmit();
+  const { isSubmitted, submitAttempted, handleSubmit } = useSubmit(onSubmit);
   const isNotValidateCondition = !isSubmitted || !isValidationOn;
 
   useEffect(() => {
@@ -41,7 +40,7 @@ const useForm = <T extends object>(
   const handleChange = (
     e:
       | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-      | { name: string; value: T },
+      | { name: string; value: T }
   ) => {
     const target = "target" in e ? e.target : e;
     const { name, value } = target;
@@ -61,6 +60,7 @@ const useForm = <T extends object>(
     isSubmitted,
     isValid,
     registerRef,
+    handleSubmit,
   };
 };
 

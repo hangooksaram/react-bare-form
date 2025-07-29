@@ -1,25 +1,21 @@
 import { useEffect, useState } from "react";
 
-const useSubmit = () => {
+const useSubmit = (onSubmit: (e: React.FormEvent) => void) => {
   const [submitAttempted, setSubmitAttempted] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  useEffect(() => {
-    const handleSubmitEvent = (e: Event) => {
-      if (e.target instanceof HTMLFormElement) {
-        setSubmitAttempted((prev) => prev + 1);
-        setIsSubmitted(true);
-      }
-    };
-    window.addEventListener("submit", handleSubmitEvent);
-    return () => {
-      window.removeEventListener("submit", handleSubmitEvent);
-    };
-  }, []);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitted(true);
+    setSubmitAttempted((prev) => prev + 1);
+
+    onSubmit(e);
+  };
 
   return {
     isSubmitted,
     submitAttempted,
+    handleSubmit,
   };
 };
 
