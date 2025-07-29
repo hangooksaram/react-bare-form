@@ -23,6 +23,8 @@ export interface AdditonalFormParameters<T extends object> {
   validationSchema?: ValidateSchema;
 }
 
+export type FormInputElement = HTMLInputElement | HTMLTextAreaElement;
+
 /**
  *
  * * required properties for form parameters

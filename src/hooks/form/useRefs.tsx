@@ -1,3 +1,4 @@
+import { FormInputElement } from "@/types";
 import { scrollToElement } from "@/utils/ref";
 import { useEffect, useRef } from "react";
 
@@ -8,9 +9,9 @@ const useRefs = () => {
       isNotSettedRef: !formElementRefs.current[key],
     };
   };
-  const cannotScrollTo = (el: HTMLInputElement) =>
+  const cannotScrollTo = (el: FormInputElement) =>
     Object.values(shouldNotScrollConditions(el.name)).some(
-      (condition) => condition,
+      (condition) => condition
     );
 
   const setRef = (el: HTMLElement, key: string) => {
@@ -30,7 +31,7 @@ const useRefs = () => {
    */
   const registerRef = (key: string): Object => {
     return {
-      ref: (el: HTMLInputElement | null) => {
+      ref: (el: FormInputElement | null) => {
         if (el) {
           setRef(el, key);
         }
@@ -39,7 +40,7 @@ const useRefs = () => {
     };
   };
 
-  const scrollToErrorElement = (el: HTMLInputElement) => {
+  const scrollToErrorElement = (el: FormInputElement) => {
     if (cannotScrollTo(el)) {
       return;
     }
