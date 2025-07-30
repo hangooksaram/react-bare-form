@@ -5,5 +5,5 @@ import Test from "./test";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Test />
-  </StrictMode>,
+  </StrictMode>
 );

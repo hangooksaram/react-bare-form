@@ -45,10 +45,7 @@ export const invalid = <T>(value: T, validateInfo: ValidateSchemaValue) => {
 const validate = <T>(value: T): { [key: string]: ValidateFunction } => {
   return {
     isRequired: () =>
-      value !== null &&
-      value !== undefined &&
-      ((typeof value === "string" && value !== "") ||
-        (Array.isArray(value) && value.length > 0)),
+      value !== null && value !== undefined && isString(value) && value !== "",
     isRegexCorrect: (regex: ValidateInfoValue) => {
       if (!isString(value)) {
         return false;
