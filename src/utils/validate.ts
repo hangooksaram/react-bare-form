@@ -70,7 +70,7 @@ const validate = <T>(value: T): { [key: string]: ValidateFunction } => {
     },
     isMinLength: (minLength: ValidateInfoValue) => {
       if (isNumber(minLength) && isString(value)) {
-        return value.length > minLength;
+        return value.length >= minLength;
       }
       return false;
     },
