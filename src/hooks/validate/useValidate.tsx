@@ -6,14 +6,14 @@ import { useDebounce } from "react-simplikit";
 
 const useValidate = <T extends { [key: string]: any }>(
   form: T,
-  validateSchema: ValidateSchema
+  validateSchema: ValidateSchema<T>
 ) => {
   const [isValid, setIsValid] = useState<boolean>(false);
   const isValidationOn =
     validateSchema !== undefined && validateSchema !== null;
   const { errors, updateError, deleteError } = useErrors<T>();
   const debouncedValidate = useDebounce(<T,>(name: string, value: T) => {
-    validateAndUpdateError(name!, value);
+    validateAndUpdateError<T>(name!, value);
   }, 500);
 
   const validateAll = () => {
@@ -22,8 +22,8 @@ const useValidate = <T extends { [key: string]: any }>(
     }
   };
 
-  const validateAndUpdateError = (name: string, value: any) => {
-    const errorMessage = invalid(value, validateSchema[name]);
+  const validateAndUpdateError = <T,>(name: string, value: T) => {
+    const errorMessage = invalid<T>(value, validateSchema[name]!);
 
     if (errorMessage) {
       updateError(name, errorMessage);
