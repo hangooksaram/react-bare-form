@@ -1,9 +1,9 @@
+import { isNumber, isRegExp, isString } from "@/types/typeGuards";
 import {
   ValidateFunction,
   ValidateInfoValue,
   ValidateSchemaValue,
-} from "@/types/index";
-import { isNumber, isRegExp, isString } from "@/types/typeGuards";
+} from "@/types/validate";
 
 export const invalid = <T>(value: T, validateInfo: ValidateSchemaValue) => {
   const v = validate(value);
@@ -44,8 +44,13 @@ export const invalid = <T>(value: T, validateInfo: ValidateSchemaValue) => {
 
 const validate = <T>(value: T): { [key: string]: ValidateFunction } => {
   return {
-    isRequired: () =>
-      value !== null && value !== undefined && isString(value) && value !== "",
+    isRequired: () => {
+      if (isString(value)) {
+        return value.trim() !== "";
+      }
+
+      return value !== null && value !== undefined;
+    },
     isRegexCorrect: (regex: ValidateInfoValue) => {
       if (!isString(value)) {
         return false;
