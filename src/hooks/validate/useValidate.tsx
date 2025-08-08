@@ -6,7 +6,7 @@ import { ValidateSchema } from "@/types/validate";
 
 const useValidate = <T extends { [key: string]: any }>(
   form: T,
-  validateSchema: ValidateSchema<T>
+  validateSchema?: ValidateSchema<T>
 ) => {
   const [isValid, setIsValid] = useState<boolean>(false);
   const isValidationOn =
@@ -17,13 +17,13 @@ const useValidate = <T extends { [key: string]: any }>(
   }, 500);
 
   const validateAll = () => {
-    for (const key of Object.keys(validateSchema)) {
+    for (const key of Object.keys(validateSchema!)) {
       validateAndUpdateError(key, form[key]);
     }
   };
 
   const validateAndUpdateError = <T,>(name: string, value: T) => {
-    const errorMessage = invalid<T>(value, validateSchema[name]!);
+    const errorMessage = invalid<T>(value, validateSchema?.[name]!);
 
     if (errorMessage) {
       updateError(name, errorMessage);
