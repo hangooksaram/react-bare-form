@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import useErrors from "../errors/useErrors";
 import { invalid } from "../../utils/validate";
-import { ValidateSchema } from "../../types";
 import { useDebounce } from "react-simplikit";
+import { ValidateSchema } from "@/types/validate";
 
 const useValidate = <T extends { [key: string]: any }>(
   form: T,
