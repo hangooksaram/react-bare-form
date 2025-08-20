@@ -1,6 +1,6 @@
 import useValidate from "@/hooks/validate/useValidate";
 
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, renderHook } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/vitest";
@@ -8,12 +8,20 @@ import "@testing-library/jest-dom/vitest";
 import Form from "../../components/Form.test";
 
 describe("if validateSchema is not defined, not execute validation", () => {
-  it("should not execute validation", async () => {
+  let hookResult: ReturnType<typeof useValidate>;
+  beforeEach(() => {
+    vi.clearAllMocks();
     const { result } = renderHook(() => useValidate({ name: "hi" }));
-    const screen = render(<Form />);
-    result.current.validateAndUpdateError = vi.fn();
+    hookResult = result.current;
+  });
 
+  it("should not execute validation", async () => {
+    hookResult.validateAndUpdateError = vi.fn();
+    const mockValidateFunc = hookResult.validateAndUpdateError;
+    const screen = render(<Form />);
+
+    expect(hookResult.isValidationOn).toBe(false);
     await userEvent.type(screen.getByPlaceholderText("Enter name"), "hi");
-    expect(result.current.validateAndUpdateError).not.toBeCalled();
+    expect(mockValidateFunc).not.toBeCalled();
   });
 });
