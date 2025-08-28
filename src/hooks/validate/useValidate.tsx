@@ -1,53 +1,61 @@
 import { useEffect, useState } from "react";
-import useErrors from "../errors/useErrors";
 import { invalid } from "../../utils/validate";
 import { useDebounce } from "react-simplikit";
-import { ValidateSchema } from "@/types/validate";
+import { InvalidField, ValidateSchema } from "@/types/validate";
 
 const useValidate = <T extends { [key: string]: any }>(
   form: T,
   validateSchema?: ValidateSchema<T>
 ) => {
-  const [isValid, setIsValid] = useState<boolean>(false);
+  const [invalidField, setInvalidField] = useState<InvalidField<T>>(null);
+
   const isValidationOn =
     validateSchema !== undefined && validateSchema !== null;
-  const { errors, updateError, deleteError } = useErrors<T>();
-  const debouncedValidate = useDebounce(<T,>(name: string, value: T) => {
-    validateAndUpdateError<T>(name!, value);
+
+  const isInvalid =
+    invalidField !== null && Object.keys(invalidField).length > 0;
+
+  const debouncedValidate = useDebounce((name: keyof T | null, value: any) => {
+    validate(name, value);
   }, 500);
 
   const validateAll = () => {
     for (const key of Object.keys(validateSchema!)) {
-      validateAndUpdateError(key, form[key]);
+      validate(key, form[key]);
     }
   };
 
-  const validateAndUpdateError = <T,>(name: string, value: T) => {
-    const errorMessage = invalid<T>(value, validateSchema?.[name]!);
+  /**
+   * Validates a specific field based on the provided validation schema.
+   *
+   * @param name - The name of the field to validate.
+   * @param value - The value of the field to validate.
+   */
 
-    if (errorMessage) {
-      updateError(name, errorMessage);
+  const validate = (name: keyof T | null, value: T) => {
+    const isError = invalid<T>(value, validateSchema?.[name]!);
 
+    if (isError) {
+      setInvalidField((prev) => ({
+        ...prev!,
+        [name as string]: value,
+      }));
       return;
     }
-    deleteError(name);
+    setInvalidField((prev): InvalidField<T> => {
+      const newField = { ...prev } as InvalidField<T>;
+      delete newField![name as string];
+      return newField;
+    });
   };
-
-  useEffect(() => {
-    if (errors === null) {
-      setIsValid(true);
-      return;
-    }
-    setIsValid(Object.keys(errors).length === 0);
-  }, [errors]);
 
   return {
-    isValid,
-    validateAndUpdateError,
     validateAll,
-    errors,
     isValidationOn,
     debouncedValidate,
+    invalidField,
+    validate,
+    isInvalid,
   };
 };
 
