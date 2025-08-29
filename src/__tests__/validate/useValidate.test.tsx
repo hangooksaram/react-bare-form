@@ -1,17 +1,26 @@
 import useValidate from "@/hooks/validate/useValidate";
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { render, renderHook } from "@testing-library/react";
+import { act, render, renderHook, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/vitest";
 
 import Form from "../../components/Form.test";
 import useRefs from "@/hooks/form/useRefs";
 import { ValidateResult } from "@/constants";
+import { ValidateSchema } from "@/types/validate";
 
-const initValidateHook = (params: any, schema?: any) => {
+const invalidValidateFormValues = {
+  name: "",
+  age: 17,
+};
+
+const initValidateHook = (
+  params: any,
+  schema?: ValidateSchema<typeof invalidValidateFormValues>
+) => {
   const { result } = renderHook(() => useValidate(params, schema));
-  return result.current;
+  return result;
 };
 
 const initHooks = () => {
@@ -20,11 +29,17 @@ const initHooks = () => {
     { name: "James" },
     { name: { required: { message: "Name is required" } } }
   );
-  const wrongValidate = initValidateHook(
-    { name: "" },
-    { name: { required: { message: "Name is required" } } }
+  const invalidValidate = initValidateHook(
+    { name: "", age: 17 },
+    {
+      name: { required: { message: "Name is required" } },
+      age: {
+        required: { message: "Age is required" },
+        min: { value: 18, message: "Min age is 19" },
+      },
+    }
   );
-  return { validateOff, validateOn, wrongValidate };
+  return { validateOff, validateOn, invalidValidate };
 };
 
 const mockScrollFunc = () => {
@@ -45,10 +60,10 @@ describe("useValidate", () => {
   });
 
   it("should not execute validation when validate schema is not set", async () => {
-    hooks.validateOff.validate = vi.fn();
-    const mockValidateFunc = hooks.validateOff.validate;
+    hooks.validateOff.current.validate = vi.fn();
+    const mockValidateFunc = hooks.validateOff.current.validate;
 
-    expect(hooks.validateOff.isValidationOn).toBe(false);
+    expect(hooks.validateOff.current.isValidationOn).toBe(false);
     await userEvent.type(screen.getByPlaceholderText("Enter name"), "James");
     expect(mockValidateFunc).not.toBeCalled();
   });
@@ -56,16 +71,27 @@ describe("useValidate", () => {
   it("should return invalid result when name is invalid", async () => {
     await userEvent.click(screen.getByText("Submit"));
 
-    expect(hooks.wrongValidate.validate("name", "")).toBe(
+    expect(hooks.invalidValidate.current.validate("name", "")).toBe(
       ValidateResult.Invalid
     );
-    expect(hooks.validateOn.validateAll()).toBe(ValidateResult.Valid);
+    expect(hooks.validateOn.current.validateAll()).toBe(ValidateResult.Valid);
   });
 
   it("should return valid result when name is valid", async () => {
     await userEvent.type(screen.getByPlaceholderText("Enter name"), "James");
-    expect(hooks.validateOn.validate("name", "James")).toBe(
+    expect(hooks.validateOn.current.validate("name", "James")).toBe(
       ValidateResult.Valid
     );
+  });
+
+  it("invalidField state should be updated when value is invalid", async () => {
+    hooks.invalidValidate.current.validateAll();
+
+    await waitFor(() => {
+      expect(hooks.invalidValidate.current.invalidField).toEqual({
+        name: "",
+        age: 17,
+      });
+    });
   });
 });
