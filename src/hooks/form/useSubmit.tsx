@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
+import { ValidateResult } from "@/constants";
 
-const useSubmit = (onSubmit: (e: React.FormEvent) => void) => {
-  const [submitAttempted, setSubmitAttempted] = useState(0);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
+const useSubmit = (
+  onSubmit: (e: React.FormEvent) => void,
+  validateAll: () => ValidateResult
+) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    setSubmitAttempted((prev) => prev + 1);
+    const result = validateAll();
+    if (result === ValidateResult.Invalid) {
+      return;
+    }
 
     onSubmit(e);
   };
 
   return {
-    isSubmitted,
-    submitAttempted,
     handleSubmit,
   };
 };

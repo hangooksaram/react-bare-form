@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { invalid } from "../../utils/validate";
 import { useDebounce } from "react-simplikit";
 import { InvalidField, ValidateSchema } from "@/types/validate";
+import { ValidateResult } from "@/constants";
 
 const useValidate = <T extends { [key: string]: any }>(
   form: T,
@@ -19,10 +20,17 @@ const useValidate = <T extends { [key: string]: any }>(
     validate(name, value);
   }, 500);
 
-  const validateAll = () => {
+  const validateAll = (): ValidateResult => {
+    const validateResults: ValidateResult[] = [];
     for (const key of Object.keys(validateSchema!)) {
-      validate(key, form[key]);
+      const result = validate(key, form[key]);
+
+      validateResults.push(result);
     }
+
+    return validateResults.includes(ValidateResult.Invalid)
+      ? ValidateResult.Invalid
+      : ValidateResult.Valid;
   };
 
   /**
@@ -32,7 +40,7 @@ const useValidate = <T extends { [key: string]: any }>(
    * @param value - The value of the field to validate.
    */
 
-  const validate = (name: keyof T | null, value: T) => {
+  const validate = (name: keyof T | null, value: T): ValidateResult => {
     const isError = invalid<T>(value, validateSchema?.[name]!);
 
     if (isError) {
@@ -40,13 +48,15 @@ const useValidate = <T extends { [key: string]: any }>(
         ...prev!,
         [name as string]: value,
       }));
-      return;
+      return ValidateResult.Invalid;
     }
     setInvalidField((prev): InvalidField<T> => {
       const newField = { ...prev } as InvalidField<T>;
       delete newField![name as string];
       return newField;
     });
+
+    return ValidateResult.Valid;
   };
 
   return {
@@ -55,7 +65,6 @@ const useValidate = <T extends { [key: string]: any }>(
     debouncedValidate,
     invalidField,
     validate,
-    isInvalid,
   };
 };
 
