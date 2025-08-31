@@ -17,7 +17,7 @@ describe("useRef", () => {
     window.HTMLElement.prototype.scrollIntoView = vi.fn();
   });
 
-  it("should focus the first invalid input after validation failure", async () => {
+  it("should scroll to the first invalid element after validation failure", async () => {
     const firstInvalidInput = screen.getByLabelText("이메일");
     const submitButton = screen.getByRole("button", { name: "제출" });
 
