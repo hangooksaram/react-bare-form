@@ -6,6 +6,7 @@ import useSubmit from "./useSubmit";
 import useValues from "./useValues";
 import useScrollWhenError from "../errors/useScrollWhenError";
 import useErrors from "../errors/useErrors";
+import usePreventLeaveWithoutSubmit from "../usePreventLeaveWithoutSubmit";
 
 export type ExternalValues<T> = T & { [key: string]: any };
 
@@ -23,6 +24,8 @@ const useForm = <T extends { [key: string]: any }>(
   const { initialValues, validationSchema, externalValues, onSubmit } =
     formParameters;
 
+  const [isDirty, setIsDirty] = useState(false);
+
   const { values, bareHandleChange } = useValues<T>(
     initialValues,
     externalValues
@@ -33,6 +36,8 @@ const useForm = <T extends { [key: string]: any }>(
   const { errors } = useErrors(invalidField, validationSchema);
   useScrollWhenError<T>(errors, formElementRefs, scrollToErrorElement);
   const { handleSubmit } = useSubmit(onSubmit, validateAll);
+  usePreventLeaveWithoutSubmit(isDirty);
+
   const isNotValidateCondition = !isValidationOn;
 
   const handleChange = (
@@ -43,6 +48,10 @@ const useForm = <T extends { [key: string]: any }>(
     const target = "target" in e ? e.target : e;
     const { name, value } = target;
     bareHandleChange(name, value);
+
+    if (isDirty === false) {
+      setIsDirty(true);
+    }
 
     if (isNotValidateCondition) {
       return;
