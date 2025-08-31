@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import useValidate from "../validate/useValidate";
 import useRefs from "./useRefs";
-import { FormParameters } from "../../types";
+import { FormParameters } from "../../types/form";
 import useSubmit from "./useSubmit";
 import useValues from "./useValues";
 import useScrollWhenError from "../errors/useScrollWhenError";

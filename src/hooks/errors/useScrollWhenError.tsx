@@ -1,4 +1,4 @@
-import { FormInputElement } from "@/types";
+import { FormInputElement } from "@/types/form";
 import { useEffect } from "react";
 
 const useScrollWhenError = <T,>(

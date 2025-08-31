@@ -1,4 +1,4 @@
-import { FormInputElement } from "@/types";
+import { FormInputElement } from "@/types/form";
 import { scrollToElement } from "@/utils/ref";
 import { useEffect, useRef } from "react";
 

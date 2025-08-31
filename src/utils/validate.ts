@@ -2,7 +2,7 @@ import {
   isNumber as isNumberGuard,
   isRegExp as isRegExpGuard,
   isString as isStringGuard,
-} from "@/types/typeGuards";
+} from "@/utils/typeGuards";
 import {
   ValidateFunction,
   ValidateInfoValue,
