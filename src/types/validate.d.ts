@@ -1,5 +1,5 @@
-export type StringValidateKeys = "minLength";
-export type NumberValidateKeys = "min" | "max";
+export type StringValidateKeys = "minLength" | "maxLength" | "isString";
+export type NumberValidateKeys = "min" | "max" | "isNumber";
 export type CommonValidateKeys = "required" | "regex";
 
 export type ValidateKeys =

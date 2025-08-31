@@ -1,4 +1,8 @@
-import { isNumber, isRegExp, isString } from "@/types/typeGuards";
+import {
+  isNumber as isNumberGuard,
+  isRegExp as isRegExpGuard,
+  isString as isStringGuard,
+} from "@/types/typeGuards";
 import {
   ValidateFunction,
   ValidateInfoValue,
@@ -7,7 +11,28 @@ import {
 
 export const invalid = <T>(value: T, validateInfo: ValidateSchemaValue) => {
   const v = validate(value);
-  const { required, min, max, minLength, regex } = validateInfo;
+  const {
+    required,
+    min,
+    max,
+    minLength,
+    maxLength,
+    regex,
+    isNumber,
+    isString,
+  } = validateInfo;
+
+  if (isString) {
+    if (!v.isString()) {
+      return isString.message;
+    }
+  }
+
+  if (isNumber) {
+    if (!v.isNumber()) {
+      return isNumber.message;
+    }
+  }
 
   if (required) {
     if (!v.isRequired()) {
@@ -34,6 +59,15 @@ export const invalid = <T>(value: T, validateInfo: ValidateSchemaValue) => {
     }
   }
 
+  if (maxLength) {
+    if (
+      typeof maxLength.value === "number" &&
+      !v.isMaxLength(maxLength.value!)
+    ) {
+      return maxLength.message;
+    }
+  }
+
   if (regex) {
     if (typeof regex.value !== "number" && !v.isRegexCorrect(regex.value!)) {
       return regex.message;
@@ -45,39 +79,51 @@ export const invalid = <T>(value: T, validateInfo: ValidateSchemaValue) => {
 const validate = <T>(value: T): { [key: string]: ValidateFunction } => {
   return {
     isRequired: () => {
-      if (isString(value)) {
+      if (isStringGuard(value)) {
         return value.trim() !== "";
       }
 
       return value !== null && value !== undefined;
     },
     isRegexCorrect: (regex: ValidateInfoValue) => {
-      if (!isString(value)) {
+      if (!isStringGuard(value)) {
         return false;
       }
-      if (isRegExp(regex)) {
+      if (isRegExpGuard(regex)) {
         return regex.test(value);
       }
       return false;
     },
     isMin: (min: ValidateInfoValue) => {
-      if (isNumber(value) && isNumber(min)) {
+      if (isNumberGuard(value) && isNumberGuard(min)) {
         return value > min;
       }
 
       return false;
     },
     isMax: (max: ValidateInfoValue) => {
-      if (isNumber(value) && isNumber(max)) {
+      if (isNumberGuard(value) && isNumberGuard(max)) {
         return value < max;
       }
       return false;
     },
     isMinLength: (minLength: ValidateInfoValue) => {
-      if (isNumber(minLength) && isString(value)) {
+      if (isNumberGuard(minLength) && isStringGuard(value)) {
         return value.length >= minLength;
       }
       return false;
+    },
+    isMaxLength: (maxLength: ValidateInfoValue) => {
+      if (isNumberGuard(maxLength) && isStringGuard(value)) {
+        return value.length <= maxLength;
+      }
+      return false;
+    },
+    isString: () => {
+      return isStringGuard(value);
+    },
+    isNumber: () => {
+      return isNumberGuard(value);
     },
   };
 };
