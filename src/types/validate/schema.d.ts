@@ -1,10 +1,14 @@
 export type StringValidateKeys = "minLength" | "maxLength" | "isString";
 export type NumberValidateKeys = "min" | "max" | "isNumber";
+export type DateValidateKeys = "isDate";
+export type FileValidateKeys = "isFile";
 export type CommonValidateKeys = "required" | "regex";
 
 export type ValidateKeys =
   | StringValidateKeys
   | NumberValidateKeys
+  | DateValidateKeys
+  | FileValidateKeys
   | CommonValidateKeys;
 
 export type StringValidateSchema = Partial<
@@ -12,6 +16,12 @@ export type StringValidateSchema = Partial<
 >;
 export type NumberValidateSchema = Partial<
   Record<NumberValidateKeys, ValidateInfo>
+>;
+export type DateValidateSchema = Partial<
+  Record<DateValidateKeys, ValidateInfo>
+>;
+export type FileValidateSchema = Partial<
+  Record<FileValidateKeys, ValidateInfo>
 >;
 export type CommonValidateSchema = Partial<
   Record<CommonValidateKeys, ValidateInfo>
@@ -21,6 +31,10 @@ type FieldValidation<T> = T extends string
   ? StringValidateSchema & CommonValidateSchema
   : T extends number
   ? NumberValidateSchema & CommonValidateSchema
+  : T extends Date
+  ? DateValidateSchema & CommonValidateSchema
+  : T extends File
+  ? FileValidateSchema & CommonValidateSchema
   : never;
 
 /**
