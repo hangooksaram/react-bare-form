@@ -23,6 +23,28 @@ type FieldValidation<T> = T extends string
   ? NumberValidateSchema & CommonValidateSchema
   : never;
 
+/**
+ * ValidateSchema
+ * @description A schema for validating form fields, where each key corresponds to a field in the form values and the value is the validation rules for that field.
+ *
+ * This type ensures that appropriate validation fields and rules are auto-completed.
+ * @example
+ * ```ts
+ * const validationSchema: ValidateSchema<FormValues> = {
+ *   email: {
+ *     required: { message: "Email is required." },
+ *     regex: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Invalid email format." },
+ *     isString: { message: "Must be a string." },
+ *   },
+ *   age: {
+ *     required: { message: "Age is required." },
+ *     min: { value: 18, message: "Must be at least 18." },
+ *     max: { value: 120, message: "Must be at most 120." },
+ *     isNumber: { message: "Must be a number." },
+ *   },
+ * };
+ * ```
+ */
 export type ValidateSchema<T> = {
   [K in keyof T]?: FieldValidation<T[K]>;
 };
