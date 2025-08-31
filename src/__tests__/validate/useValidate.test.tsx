@@ -8,7 +8,7 @@ import "@testing-library/jest-dom/vitest";
 import Form from "../../components/Form.test";
 import useRefs from "@/hooks/form/useRefs";
 import { ValidateResult } from "@/constants";
-import { ValidateSchema } from "@/types/validate";
+import { ValidateSchema } from "@/types/validate/schema";
 
 const invalidValidateFormValues = {
   name: "",

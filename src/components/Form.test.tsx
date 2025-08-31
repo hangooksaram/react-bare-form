@@ -1,5 +1,5 @@
 import useForm from "@/hooks/form/useForm";
-import { ValidateSchema } from "@/types/validate";
+import { ValidateSchema } from "@/types/validate/schema";
 import { useEffect, useRef } from "react";
 
 const Test = () => {

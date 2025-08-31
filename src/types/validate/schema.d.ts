@@ -7,13 +7,6 @@ export type ValidateKeys =
   | NumberValidateKeys
   | CommonValidateKeys;
 
-export type ValidateInfoValue = RegExp | number | undefined;
-export interface ValidateInfo {
-  message?: string;
-  value?: ValidateInfoValue;
-}
-export type ValidateFunction = (value?: ValidateInfoValue) => boolean;
-
 export type StringValidateSchema = Partial<
   Record<StringValidateKeys, ValidateInfo>
 >;
@@ -23,7 +16,6 @@ export type NumberValidateSchema = Partial<
 export type CommonValidateSchema = Partial<
   Record<CommonValidateKeys, ValidateInfo>
 >;
-export type ValidateSchemaValue = Partial<Record<ValidateKeys, ValidateInfo>>;
 
 type FieldValidation<T> = T extends string
   ? StringValidateSchema & CommonValidateSchema

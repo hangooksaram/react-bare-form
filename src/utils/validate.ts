@@ -7,7 +7,7 @@ import {
   ValidateFunction,
   ValidateInfoValue,
   ValidateSchemaValue,
-} from "@/types/validate";
+} from "@/types/validate/util";
 
 export const invalid = <T>(value: T, validateInfo: ValidateSchemaValue) => {
   const v = validate(value);
