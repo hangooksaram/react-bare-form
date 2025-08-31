@@ -33,7 +33,7 @@ const useForm = <T extends { [key: string]: any }>(
   const { registerRef, scrollToErrorElement, formElementRefs } = useRefs();
   const { invalidField, validateAll, isValidationOn, debouncedValidate } =
     useValidate<T>(values, validationSchema!);
-  const { errors } = useErrors(invalidField, validationSchema);
+  const { errors } = useErrors<T>(invalidField, validationSchema);
   useScrollWhenError<T>(errors, formElementRefs, scrollToErrorElement);
   const { handleSubmit } = useSubmit(onSubmit, validateAll);
   usePreventLeaveWithoutSubmit(isDirty);

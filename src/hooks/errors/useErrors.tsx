@@ -3,15 +3,11 @@ import { invalid } from "@/utils/validate";
 import { useEffect, useState } from "react";
 import { usePrevious } from "react-simplikit";
 
-export interface FormErrors {
-  [key: string]: string;
-}
-
-const useErrors = <T extends FormErrors>(
+const useErrors = <T extends { [key: string]: any }>(
   invalidField: InvalidField<T>,
   validateSchema: ValidateSchema<T>
 ) => {
-  const [errors, setErrors] = useState<T | null>(null);
+  const [errors, setErrors] = useState<FormErrors<T> | null>(null);
   const prevInvalidField = usePrevious(invalidField);
 
   const updateError = (key: keyof T | null, errorMessage: string) => {
@@ -20,8 +16,8 @@ const useErrors = <T extends FormErrors>(
 
   const deleteError = (key: keyof T | null) => {
     if (errors !== null) {
-      setErrors((prev: T | null) => {
-        const copied = { ...(prev as T) };
+      setErrors((prev: FormErrors<T> | null) => {
+        const copied = { ...(prev as FormErrors<T>) };
         delete copied[key as string];
         return copied;
       });
