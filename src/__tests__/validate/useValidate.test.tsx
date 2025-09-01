@@ -69,7 +69,7 @@ describe("useValidate", () => {
   });
 
   it("should return invalid result when name is invalid", async () => {
-    await userEvent.click(screen.getByText("Submit"));
+    await userEvent.click(screen.getByText("제출"));
 
     expect(hooks.invalidValidate.current.validate("name", "")).toBe(
       ValidateResult.Invalid

@@ -6,8 +6,10 @@ const Test = () => {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const initalFormValues = {
-    name: "",
     email: "",
+    name: "",
+    password: "",
+    age: 0,
     phone: "",
     address: "",
     city: "",
@@ -17,6 +19,11 @@ const Test = () => {
     notes: "",
   };
   const validationSchema: ValidateSchema<typeof initalFormValues> = {
+    email: {
+      required: {
+        message: "email is required",
+      },
+    },
     name: {
       required: {
         message: "name is required",
@@ -26,9 +33,26 @@ const Test = () => {
         value: 3,
       },
     },
-    email: {
+    password: {
       required: {
-        message: "email is required",
+        message: "password is required",
+      },
+      minLength: {
+        message: "password must be at least 6 characters",
+        value: 6,
+      },
+    },
+    age: {
+      required: {
+        message: "age is required",
+      },
+      min: {
+        message: "age must be at least 18",
+        value: 18,
+      },
+      max: {
+        message: "age must be at most 99",
+        value: 99,
       },
     },
     phone: {
@@ -85,16 +109,9 @@ const Test = () => {
       }}
     >
       <h1>Form Test</h1>
+      <label htmlFor="email">이메일</label>
       <input
-        name="name"
-        onChange={form.handleChange}
-        value={form.values.name}
-        type="text"
-        placeholder="Enter name"
-        {...form.registerRef("name")}
-      />
-      {form.errors?.name}
-      <input
+        id="email"
         name="email"
         onChange={form.handleChange}
         value={form.values.email}
@@ -103,7 +120,31 @@ const Test = () => {
         {...form.registerRef("email")}
       />
       {form.errors?.email}
+      <label htmlFor="name">이름</label>
       <input
+        id="name"
+        name="name"
+        onChange={form.handleChange}
+        value={form.values.name}
+        type="text"
+        placeholder="Enter name"
+        {...form.registerRef("name")}
+      />
+      {form.errors?.name}
+      <label htmlFor="password">비밀번호</label>
+      <input
+        id="password"
+        name="password"
+        onChange={form.handleChange}
+        value={form.values.password}
+        type="password"
+        placeholder="Enter password"
+        {...form.registerRef("password")}
+      />
+      {form.errors?.password}
+      <label htmlFor="phone">전화번호</label>
+      <input
+        id="phone"
         name="phone"
         onChange={form.handleChange}
         value={form.values.phone}
@@ -112,7 +153,20 @@ const Test = () => {
         {...form.registerRef("phone")}
       />
       {form.errors?.phone}
+      <label htmlFor="age">나이</label>
       <input
+        id="age"
+        name="age"
+        onChange={form.handleChange}
+        value={form.values.age}
+        type="number"
+        placeholder="Enter age"
+        {...form.registerRef("age")}
+      />
+      {form.errors?.age}
+      <label htmlFor="address">주소</label>
+      <input
+        id="address"
         name="address"
         onChange={form.handleChange}
         value={form.values.address}
@@ -121,7 +175,9 @@ const Test = () => {
         {...form.registerRef("address")}
       />
       {form.errors?.address}
+      <label htmlFor="city">도시</label>
       <input
+        id="city"
         name="city"
         onChange={form.handleChange}
         value={form.values.city}
@@ -130,7 +186,9 @@ const Test = () => {
         {...form.registerRef("city")}
       />
       {form.errors?.city}
+      <label htmlFor="state">주</label>
       <input
+        id="state"
         name="state"
         onChange={form.handleChange}
         value={form.values.state}
@@ -139,7 +197,9 @@ const Test = () => {
         {...form.registerRef("state")}
       />
       {form.errors?.state}
+      <label htmlFor="zip">우편번호</label>
       <input
+        id="zip"
         name="zip"
         onChange={form.handleChange}
         value={form.values.zip}
@@ -148,7 +208,9 @@ const Test = () => {
         {...form.registerRef("zip")}
       />
       {form.errors?.zip}
+      <label htmlFor="country">나라</label>
       <input
+        id="country"
         name="country"
         onChange={form.handleChange}
         value={form.values.country}
@@ -157,7 +219,9 @@ const Test = () => {
         {...form.registerRef("country")}
       />
       {form.errors?.country}
+      <label htmlFor="notes">메모</label>
       <textarea
+        id="notes"
         name="notes"
         onChange={form.handleChange}
         value={form.values.notes}
@@ -165,7 +229,7 @@ const Test = () => {
         {...form.registerRef("notes")}
       ></textarea>
       {form.errors?.notes}
-      <button type="submit">Submit</button>
+      <button type="submit">제출</button>
     </form>
   );
 };

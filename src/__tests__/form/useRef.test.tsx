@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { render, renderHook, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom/vitest";
-import TestForm from "@/test";
+import TestForm from "@/components/Form.test";
 import useRefs from "@/hooks/form/useRefs";
 import * as utlRefFuncs from "@/utils/ref";
 
