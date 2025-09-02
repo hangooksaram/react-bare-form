@@ -1,4 +1,10 @@
-export type StringValidateKeys = "minLength" | "maxLength" | "isString";
+import { ValidateInfo } from "./util";
+
+export type StringValidateKeys =
+  | "minLength"
+  | "maxLength"
+  | "isString"
+  | "isDate";
 export type NumberValidateKeys = "min" | "max" | "isNumber";
 export type DateValidateKeys = "isDate";
 export type FileValidateKeys = "isFile";
@@ -18,10 +24,10 @@ export type NumberValidateSchema = Partial<
   Record<NumberValidateKeys, ValidateInfo>
 >;
 export type DateValidateSchema = Partial<
-  Record<DateValidateKeys, ValidateInfo>
+  Record<DateValidateKeys?, ValidateInfo>
 >;
 export type FileValidateSchema = Partial<
-  Record<FileValidateKeys, ValidateInfo>
+  Record<FileValidateKeys?, ValidateInfo>
 >;
 export type CommonValidateSchema = Partial<
   Record<CommonValidateKeys, ValidateInfo>
