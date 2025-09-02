@@ -1,3 +1,4 @@
+import { FormErrors } from "@/types/error";
 import { InvalidField, ValidateSchema } from "@/types/validate/schema";
 import { invalid } from "@/utils/validate";
 import { useEffect, useState } from "react";

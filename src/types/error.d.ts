@@ -1,3 +1,3 @@
-type FormErrors<T extends object> = {
+export type FormErrors<T extends object> = {
   [key in keyof T]: string;
 };
