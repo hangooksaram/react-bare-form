@@ -1,10 +1,11 @@
 import { FormErrors } from "@/types/error";
+import { GeneralFormType } from "@/types/form";
 import { InvalidField, ValidateSchema } from "@/types/validate/schema";
 import { invalid } from "@/utils/validate";
 import { useEffect, useState } from "react";
 import { usePrevious } from "react-simplikit";
 
-const useErrors = <T extends { [key: string]: any }>(
+const useErrors = <T extends GeneralFormType>(
   invalidField: InvalidField<T>,
   validateSchema: ValidateSchema<T>
 ) => {

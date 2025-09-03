@@ -24,7 +24,9 @@ export type FormInputElement = HTMLInputElement | HTMLTextAreaElement;
  * @validationSchema
  *
  */
-export type FormParameters<T extends object> = EssentialFormParameters<T> &
+export type FormParameters<T> = EssentialFormParameters<T> &
   AdditonalFormParameters<T>;
 
 export interface Error {}
+
+export type GeneralFormType = Record<string, any>;

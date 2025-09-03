@@ -1,8 +1,8 @@
 import { FormErrors } from "@/types/error";
-import { FormInputElement } from "@/types/form";
+import { FormInputElement, GeneralFormType } from "@/types/form";
 import { useEffect } from "react";
 
-const useScrollWhenError = <T extends object>(
+const useScrollWhenError = <T extends GeneralFormType>(
   error: FormErrors<T> | null,
   formElementRefs: React.RefObject<{ [key: string]: HTMLElement }>,
   scrollToErrorElement: (el: FormInputElement) => void

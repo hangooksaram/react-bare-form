@@ -3,8 +3,9 @@ import { invalid } from "../../utils/validate";
 import { useDebounce } from "react-simplikit";
 import { InvalidField, ValidateSchema } from "@/types/validate/schema";
 import { ValidateResult } from "@/constants";
+import { GeneralFormType } from "@/types/form";
 
-const useValidate = <T extends { [key: string]: any }>(
+const useValidate = <T extends GeneralFormType>(
   form: T,
   validateSchema?: ValidateSchema<T>
 ) => {

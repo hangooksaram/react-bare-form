@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import useValidate from "../validate/useValidate";
 import useRefs from "./useRefs";
-import { FormParameters } from "../../types/form";
+import { FormParameters, GeneralFormType } from "../../types/form";
 import useSubmit from "./useSubmit";
 import useValues from "./useValues";
 import useScrollWhenError from "../errors/useScrollWhenError";
@@ -18,7 +18,7 @@ export type ExternalValues<T> = T & { [key: string]: any };
  *
  * @returns
  */
-const useForm = <T extends { [key: string]: any }>(
+const useForm = <T extends GeneralFormType>(
   formParameters: FormParameters<T>
 ) => {
   const { initialValues, validationSchema, externalValues, onSubmit } =
