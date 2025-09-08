@@ -8,6 +8,7 @@ export interface EssentialFormParameters<T extends object> {
 export interface AdditonalFormParameters<T extends object> {
   externalValues?: ExternalValues<T>;
   validationSchema?: ValidateSchema;
+  scrollOnError?: boolean;
 }
 
 export type FormInputElement = HTMLInputElement | HTMLTextAreaElement;

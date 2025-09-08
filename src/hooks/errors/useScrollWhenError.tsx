@@ -2,20 +2,38 @@ import { FormErrors } from "@/types/error";
 import { FormInputElement, GeneralFormType } from "@/types/form";
 import { useEffect } from "react";
 
+interface ScrollWhenErrorProps<T extends GeneralFormType> {
+  errors: FormErrors<T> | null;
+  formElementRefs: React.RefObject<{ [key: string]: HTMLElement }>;
+  scrollToErrorElement: (el: FormInputElement) => void;
+  scrollOnError?: boolean;
+}
+
 const useScrollWhenError = <T extends GeneralFormType>(
-  error: FormErrors<T> | null,
-  formElementRefs: React.RefObject<{ [key: string]: HTMLElement }>,
-  scrollToErrorElement: (el: FormInputElement) => void
+  props: ScrollWhenErrorProps<T>
 ) => {
-  const firstErrorKey = error ? Object.keys(error)[0] : null;
+  const { errors, formElementRefs, scrollToErrorElement, scrollOnError } =
+    props;
+  const firstErrorKey = errors ? Object.keys(errors)[0] : null;
 
   useEffect(() => {
-    if (firstErrorKey) {
-      scrollToErrorElement(
-        formElementRefs.current[firstErrorKey] as FormInputElement
-      );
+    if (!scrollOnError) {
+      return;
     }
-  }, [error, firstErrorKey]);
+    if (!firstErrorKey) {
+      return;
+    }
+
+    const firstErrorEl = formElementRefs.current[firstErrorKey];
+
+    if (!firstErrorEl) {
+      return;
+    }
+
+    scrollToErrorElement(
+      formElementRefs.current[firstErrorKey] as FormInputElement
+    );
+  }, [errors, firstErrorKey]);
 };
 
 export default useScrollWhenError;

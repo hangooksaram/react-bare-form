@@ -25,8 +25,13 @@ export type ExternalValues<T> = T & { [key: string]: any };
 const useForm = <T extends GeneralFormType>(
   formParameters: FormParameters<T>
 ) => {
-  const { initialValues, validationSchema, externalValues, onSubmit } =
-    formParameters;
+  const {
+    initialValues,
+    validationSchema,
+    externalValues,
+    onSubmit,
+    scrollOnError = true,
+  } = formParameters;
 
   const [isDirty, setIsDirty] = useState(false);
 
@@ -38,7 +43,12 @@ const useForm = <T extends GeneralFormType>(
   const { invalidField, validateAll, isValidationOn, debouncedValidate } =
     useValidate<T>(values, validationSchema!);
   const { errors } = useErrors<T>(invalidField, validationSchema);
-  useScrollWhenError<T>(errors, formElementRefs, scrollToErrorElement);
+  useScrollWhenError<T>({
+    errors,
+    formElementRefs,
+    scrollToErrorElement,
+    scrollOnError,
+  });
   const { handleSubmit } = useSubmit(onSubmit, validateAll);
   usePreventLeaveWithoutSubmit(isDirty);
 
