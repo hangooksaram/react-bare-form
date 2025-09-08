@@ -1,7 +1,7 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ExternalValues } from "./useForm";
 import { mergeValuesIfKeyExisted } from "@/utils/dataTypes";
-import { GeneralFormType } from "@/types/form";
+import { FormValueType, GeneralFormType } from "@/types/form";
 
 const useValues = <T extends GeneralFormType>(
   initialValues: T,
@@ -15,7 +15,7 @@ const useValues = <T extends GeneralFormType>(
     }
   }, [externalValues]);
 
-  const bareHandleChange = (name: string, value: string | T) => {
+  const bareHandleChange = (name: string, value: FormValueType) => {
     setValues((prev) => ({ ...prev, [name]: value }));
   };
 

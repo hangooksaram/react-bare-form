@@ -29,4 +29,6 @@ export type FormParameters<T> = EssentialFormParameters<T> &
 
 export interface Error {}
 
-export type GeneralFormType = Record<string, any>;
+export type FormValueType = any;
+
+export type GeneralFormType = Record<string, FormValueType>;

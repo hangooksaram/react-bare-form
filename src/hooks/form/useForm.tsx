@@ -1,7 +1,11 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import useValidate from "../validate/useValidate";
 import useRefs from "./useRefs";
-import { FormParameters, GeneralFormType } from "../../types/form";
+import {
+  FormParameters,
+  FormValueType,
+  GeneralFormType,
+} from "../../types/form";
 import useSubmit from "./useSubmit";
 import useValues from "./useValues";
 import useScrollWhenError from "../errors/useScrollWhenError";
@@ -43,7 +47,7 @@ const useForm = <T extends GeneralFormType>(
   const handleChange = (
     e:
       | ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-      | { name: string; value: T }
+      | { name: string; value: FormValueType }
   ) => {
     const target = "target" in e ? e.target : e;
     const { name, value } = target;
