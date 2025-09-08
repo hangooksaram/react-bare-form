@@ -46,30 +46,24 @@ export const invalid = <T>(value: T, validateInfo: ValidateSchemaValue) => {
     }
   }
   if (max) {
-    if (typeof max.value === "number" && !v.isMax(max.value!)) {
+    if (!v.isMax(Number(max.value!))) {
       return max.message;
     }
   }
   if (minLength) {
-    if (
-      typeof minLength.value === "number" &&
-      !v.isMinLength(minLength.value!)
-    ) {
+    if (!v.isMinLength(minLength.value!)) {
       return minLength.message;
     }
   }
 
   if (maxLength) {
-    if (
-      typeof maxLength.value === "number" &&
-      !v.isMaxLength(maxLength.value!)
-    ) {
+    if (!v.isMaxLength(maxLength.value!)) {
       return maxLength.message;
     }
   }
 
   if (regex) {
-    if (typeof regex.value !== "number" && !v.isRegexCorrect(regex.value!)) {
+    if (typeof regex.value !== "string" && !v.isRegexCorrect(regex.value!)) {
       return regex.message;
     }
   }
@@ -95,15 +89,15 @@ const validate = <T>(value: T): { [key: string]: ValidateFunction } => {
       return false;
     },
     isMin: (min: ValidateInfoValue) => {
-      if (isNumberGuard(value) && isNumberGuard(min)) {
-        return value > min;
+      if (isNumberGuard(Number(value)) && isNumberGuard(min)) {
+        return Number(value) > min;
       }
 
       return false;
     },
     isMax: (max: ValidateInfoValue) => {
-      if (isNumberGuard(value) && isNumberGuard(max)) {
-        return value < max;
+      if (isNumberGuard(Number(value)) && isNumberGuard(max)) {
+        return Number(value) < max;
       }
       return false;
     },
