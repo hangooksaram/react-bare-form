@@ -1,15 +1,16 @@
-import { useEffect, useState } from "react";
 import { invalid } from "../../utils/validate";
 import { useDebounce } from "react-simplikit";
-import { InvalidField, ValidateSchema } from "@/types/validate/schema";
+import { ValidateSchema } from "@/types/validate/schema";
 import { ValidateResult } from "@/constants";
 import { GeneralFormType } from "@/types/form";
+import useInvalidField from "./useInvalidField";
 
 const useValidate = <T extends GeneralFormType>(
   form: T,
   validateSchema?: ValidateSchema<T>
 ) => {
-  const [invalidField, setInvalidField] = useState<InvalidField<T>>(null);
+  const { addInvalidField, removeInvalidField, invalidField } =
+    useInvalidField<T>();
 
   const isValidationOn =
     validateSchema !== undefined && validateSchema !== null;
@@ -42,18 +43,10 @@ const useValidate = <T extends GeneralFormType>(
     const isError = invalid<T>(value, validateSchema?.[name]!);
 
     if (isError) {
-      setInvalidField((prev) => ({
-        ...prev!,
-        [name as string]: value,
-      }));
+      addInvalidField(name, value);
       return ValidateResult.Invalid;
     }
-    setInvalidField((prev): InvalidField<T> => {
-      const newField = { ...prev } as InvalidField<T>;
-      delete newField![name as string];
-      return newField;
-    });
-
+    removeInvalidField(name);
     return ValidateResult.Valid;
   };
 
