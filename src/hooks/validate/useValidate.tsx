@@ -14,9 +14,6 @@ const useValidate = <T extends GeneralFormType>(
   const isValidationOn =
     validateSchema !== undefined && validateSchema !== null;
 
-  const isInvalid =
-    invalidField !== null && Object.keys(invalidField).length > 0;
-
   const debouncedValidate = useDebounce((name: keyof T | null, value: any) => {
     validate(name, value);
   }, 500);
