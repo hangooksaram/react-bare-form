@@ -40,10 +40,10 @@ const useValidate = <T extends GeneralFormType>(
    */
 
   const validate = (name: keyof T | null, value: T): ValidateResult => {
-    const isError = invalid<T>(value, validateSchema?.[name]!);
+    const errorMessage = invalid<T>(value, validateSchema?.[name]!);
 
-    if (isError) {
-      addInvalidField(name, value);
+    if (errorMessage) {
+      addInvalidField(name, value, errorMessage);
       return ValidateResult.Invalid;
     }
     removeInvalidField(name);

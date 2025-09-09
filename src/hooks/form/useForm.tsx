@@ -42,7 +42,8 @@ const useForm = <T extends GeneralFormType>(
   const { registerRef, scrollToErrorElement, formElementRefs } = useRefs();
   const { invalidField, validateAll, isValidationOn, debouncedValidate } =
     useValidate<T>(values, validationSchema);
-  const { errors } = useErrors<T>(invalidField, validationSchema);
+
+  const { errors } = useErrors<T>(invalidField);
   useScrollWhenError<T>({
     errors,
     formElementRefs,

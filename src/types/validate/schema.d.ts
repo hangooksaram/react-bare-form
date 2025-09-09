@@ -69,4 +69,8 @@ export type ValidateSchema<T> = {
   [K in keyof T]?: FieldValidation<T[K]>;
 };
 
-export type InvalidField<T> = { [key in keyof T]: any } | null;
+export type InvalidField<T> =
+  | {
+      [key in keyof T]: { value: any; errorMessage?: string };
+    }
+  | null;

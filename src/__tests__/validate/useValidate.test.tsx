@@ -89,8 +89,8 @@ describe("useValidate", () => {
 
     await waitFor(() => {
       expect(hooks.invalidValidate.current.invalidField).toEqual({
-        name: "",
-        age: 17,
+        name: { value: "", errorMessage: "Name is required" },
+        age: { value: 17, errorMessage: "Min age is 19" },
       });
     });
   });

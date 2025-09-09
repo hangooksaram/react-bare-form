@@ -5,10 +5,14 @@ import { useState } from "react";
 const useInvalidField = <T extends GeneralFormType>() => {
   const [invalidField, setInvalidField] = useState<InvalidField<T>>(null);
 
-  const addInvalidField = (name: keyof T | null, value: T) => {
+  const addInvalidField = (
+    name: keyof T | null,
+    value: T,
+    errorMessage?: string
+  ) => {
     setInvalidField((prev) => ({
       ...prev!,
-      [name as string]: value,
+      [name as string]: { value, errorMessage },
     }));
   };
 

@@ -6,8 +6,7 @@ import { useEffect, useState } from "react";
 import { usePrevious } from "react-simplikit";
 
 const useErrors = <T extends GeneralFormType>(
-  invalidField: InvalidField<T>,
-  validateSchema?: ValidateSchema<T>
+  invalidField: InvalidField<T>
 ) => {
   const [errors, setErrors] = useState<FormErrors<T> | null>(null);
   const prevInvalidField = usePrevious(invalidField);
@@ -30,12 +29,11 @@ const useErrors = <T extends GeneralFormType>(
     if (!invalidField) {
       return;
     }
-    Object.keys(invalidField).forEach((field) => {
-      const errorMessage = invalid<T>(
-        invalidField[field],
-        validateSchema?.[field]!
-      );
-      updateError(field, errorMessage!);
+
+    Object.entries(invalidField).forEach(([field, { value, errorMessage }]) => {
+      if (errorMessage) {
+        updateError(field as keyof T, errorMessage!);
+      }
     });
   };
 
@@ -55,9 +53,6 @@ const useErrors = <T extends GeneralFormType>(
   }, [prevInvalidField]);
 
   useEffect(() => {
-    if (!validateSchema) {
-      return;
-    }
     updateErrorsByInvalidField();
   }, [invalidField]);
 
