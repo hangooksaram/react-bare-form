@@ -1,4 +1,5 @@
 import { ExternalValues } from "@/hooks/form/useForm";
+import { ValidateSchema } from "./validate/schema";
 
 export interface EssentialFormParameters<T extends object> {
   initialValues: T;
@@ -7,7 +8,7 @@ export interface EssentialFormParameters<T extends object> {
 
 export interface AdditonalFormParameters<T extends object> {
   externalValues?: ExternalValues<T>;
-  validationSchema?: ValidateSchema;
+  validationSchema?: ValidateSchema<T>;
   scrollOnError?: boolean;
 }
 
