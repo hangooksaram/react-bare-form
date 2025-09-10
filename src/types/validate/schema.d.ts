@@ -1,4 +1,5 @@
 import { ValidateInfo } from "./util";
+import * as Yup from "yup";
 
 export type StringValidateKeys =
   | "minLength"
@@ -65,9 +66,11 @@ type FieldValidation<T> = T extends string
  * };
  * ```
  */
-export type ValidateSchema<T> = {
-  [K in keyof T]?: FieldValidation<T[K]>;
-};
+export type ValidateSchema<T> =
+  | {
+      [K in keyof T]?: FieldValidation<T[K]>;
+    }
+  | Yup.Schema<T>;
 
 export type InvalidField<T> =
   | {

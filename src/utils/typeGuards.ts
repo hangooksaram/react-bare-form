@@ -1,3 +1,5 @@
+import * as Yup from "yup";
+
 export const isStringArray = (array: any[]): array is string[] => {
   return array.every((item) => typeof item === "string");
 };
@@ -12,4 +14,8 @@ export const isNumber = (value: any): value is number => {
 
 export const isString = (value: any): value is string => {
   return typeof value === "string";
+};
+
+export const isYupSchema = (schema: any): schema is Yup.Schema<any> => {
+  return typeof schema?.validate === "function";
 };
